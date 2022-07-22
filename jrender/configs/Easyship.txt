@@ -1,0 +1,103 @@
+########
+    expname=Easyship								#  experiment name
+    basedir=logs									#  where to store ckpts and logs
+    datadir=jrender/data/nerf_synthetic/Easyship			#  input data directory
+########
+
+
+# training options
+
+
+netdepth=8											#  layers in network
+netwidth=256										#  channels per layer
+netdepth_fine=8										#  layers in fine network
+netwidth_fine=256									#  channels per layer in fine network
+
+N_iters=101000										#  number of iters
+########
+    N_rand=1024										#  batch size (number of random rays per gradient step)
+    lrate=5e-4										#  learning rate
+    lrate_decay=500									#  exponential learning rate decay (in 1000 steps)
+########
+
+chunk=8192											#  number of rays processed in parallel, decrease if running OOM
+netchunk=65536									#  number of pts sent through network in parallel, decrease if running OOM
+
+########
+    no_batching=True								#  only take random rays from 1 image at a time
+########
+
+no_reload=False										#  do not reload weights from saved ckpt
+ft_path=None										#  specific weights npy file to reload for coarse network
+
+########
+    precrop_iters=500								#  number of steps to train on central crops
+    precrop_frac=0.5								#  fraction of img taken for central crops) 
+########
+
+
+# rendering options
+
+########
+	N_samples=64									#  number of coarse samples per ray
+	N_importance=512								#  number of additional fine samples per ray
+########
+
+perturb=1.											#  set to 0. for no jitter, 1. for jitter
+use_viewdirs=True									#  use full 5D input instead of 3D
+i_embed=0											#  set 0 for default positional encoding, -1 for none
+multires=12											#  log2 of max freq for positional encoding (3D location)
+multires_views=8									#  log2 of max freq for positional encoding (2D direction)
+raw_noise_std=0.									#  std dev of noise added to regularize sigma_a output, 1e0 recommended
+render_only=False									#  do not optimize, reload weights and render out render_poses path
+render_test=False									#  render the test set instead of render_poses path
+render_factor=0										#  downsampling factor to speed up rendering, set 4 or 8 for fast preview
+
+
+
+# dataset options
+
+
+dataset_type=blender								#  options: llff / blender / deepvoxels
+testskip=1											#  will load 1/N images from test/val set, useful for large datasets like deepvoxels
+faketestskip=1										#  will load 1/N images from test/val set, useful for large datasets like deepvoxels
+
+
+## deepvoxels flags
+
+
+shape=greek											#  options : armchair / cube / greek / vase
+
+
+## blender flags
+
+########
+    white_bkgd=True									#  set to render synthetic data on a white bkgd (always use for dvoxels)
+    half_res=False									#  load blender synthetic data at 400x400 instead of 800x800
+    near=0.01											#  set near distance
+    far=10.											#  set far distance
+########
+
+do_intrinsic=False									#  use intrinsic matrix
+blender_factor=1									#  downsample factor for blender images
+
+
+## llff flags
+
+
+factor=8											#  downsample factor for LLFF images
+no_ndc=False											#  don't use normalized device coordinates(set for non-forward facing scenes)
+lindisp=False										#  sampling linearly in disparity rather than depth
+spherify=False										#  set for spherical 360 scenes
+llffhold=8											#  will take every 1/N images as LLFF test set, paper uses 8
+
+
+# logging/saving options
+
+
+i_print=100											#  frequency of console printout and metric loggin
+i_img=1000											#  frequency of tensorboard image logging
+i_weights=10000										#  frequency of weight ckpt saving
+i_testset=10000										#  frequency of testset saving
+i_tottest=10000										#  frequency of testset saving
+i_video=100000										#  frequency of render_poses video saving
