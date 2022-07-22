@@ -1,6 +1,6 @@
 # Jittor 可微渲染新视角生成赛题 NeRF、Instant-NGP
 
-![Car_r_6](README.assets\Car_r_6-16566595709211.png)
+<img src="README.assets\Car_r_6-16566595709211.png" alt="Car_r_6"/>
 
 ## 简介
 本项目包含了第二届计图挑战赛计图 - 可微渲染新视角生成赛题的代码实现和参数设置。本项目的特点是：对两个Baseline（jrender、jnerf）的默认参数进行调节，达到了更高的PSNR。
